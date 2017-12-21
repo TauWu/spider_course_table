@@ -1,12 +1,12 @@
 # 项目名称
-spider__course__table
+spider_course_table
 <p>
 课表爬虫
 
 # 项目目标
 提供各种花式爬取学生课表的Python代码
 <p>
-提取网址: <a herf="http://xk.urp.seu.edu.cn/jw_service/service/stuCurriculum.action">学生课表</a>
+提取网址: http://xk.urp.seu.edu.cn/jw_service/service/stuCurriculum.action
 <p>
 
 ## GET请求
