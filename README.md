@@ -66,4 +66,7 @@ def start_run(card_no):
 # Python3 安装
 sudo apt-get install python3
 sudo apt-get intsall python3-pip
+
+# requests 安装
+pip3 install requests
 ```
