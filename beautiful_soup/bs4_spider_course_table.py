@@ -9,11 +9,11 @@ from constant.request_const import request_methods, raw_url
 
 def get_course(card_no, academic_year):
     url = "{raw_url}?queryStudentId={card_no}&queryAcademicYear={academic_year}".format(raw_url=raw_url, card_no=card_no, academic_year=academic_year)
-    return requests.get(url).text()
+    return requests.get(url).text
 
 def post_course(card_no, academic_year):
     post_data = {"queryStudentId":card_no,"queryAcademicYear":academic_year}
-    return requests.post(raw_url, data=post_data).text()
+    return requests.post(raw_url, data=post_data).text
 
 def request_course(card_no, academic_year, method):
     """表链接
@@ -30,4 +30,4 @@ def request_course(card_no, academic_year, method):
     return req
 
 if __name__ == "__main__":
-    request_course("213171001","17-18-2",1)
+    request_course("213171001","17-18-2",2)
