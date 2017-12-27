@@ -87,18 +87,15 @@ def get_course_dict(course_list):
     count = 1
     # 存放所有课程信息数据
     course_dict = dict()
-    # 存放时间区段课程数据
-    course_part_list = list()
-    # 存放单节课程数据
-    course_single = dict()
-
     for course in course_list:
-        course_part_list = []
+        # 存放时间区段课程数据
+        course_part_list = list()
         if len(course) == 0:
             course_part_list = []
         else:
             for i in range(0,len(course),3):
-                course_single = {}
+                # 存放单节课程数据
+                course_single = dict()
                 course_single["name"] = course[i]
                 result = re.findall("\[(.+)\-(.+)周\](.+)\-(.+)节", course[i+1])
                 course_single["start_week"] = result[0][0]
