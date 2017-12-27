@@ -9,8 +9,6 @@ from constant.request_const import request_methods, raw_url
 
 import re
 
-from pprint import pprint
-
 def get_course(card_no, academic_year):
     """获取课表(GET)
     """
