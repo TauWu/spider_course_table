@@ -6,10 +6,9 @@ sys.path.append("..")
 import requests
 from bs4 import BeautifulSoup
 from constant.request_const import request_methods, raw_url
+from database import db_conn
 
-import re
-
-from pprint import pprint
+import re, json
 
 def get_course(card_no, academic_year):
     """获取课表(GET)
@@ -108,6 +107,28 @@ def get_course_dict(course_list):
         count = count + 1
     return course_dict
 
+def insert_db(conn, cur, card_no, academic_year, course_info):
+    insert_sql = """
+    insert into
+        s_course_table(card_no, academic_year, course_info)
+    values
+        ({card_no}, "{academic_year}", "{course_info}")
+    """
+    cur.execute(insert_sql.format(card_no=card_no,academic_year=academic_year,course_info=course_info))
+    conn.commit()
+
+def insert_func(card_no):
+    bsObj = get_beautiful_soup(str(i),"17-18-2",1)
+    course_info = get_course_dict(get_course_list(bsObj))
+    conn, cur = db_conn()
+    insert_db(conn, cur, str(i), "17-18-2", str(course_info))
+
 if __name__ == "__main__":
-    bsObj = get_beautiful_soup("213162983","17-18-2",1)
-    print(get_course_dict(get_course_list(bsObj)))
+    for i in range(213140001,213143999):
+        insert_func(i)
+    for i in range(213150001,213153999):
+        insert_func(i)
+    for i in range(213160001,213163999):
+        insert_func(i)
+    for i in range(213170001,213173999):
+        insert_func(i)
