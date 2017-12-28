@@ -131,15 +131,15 @@ def update_db(conn, cur, card_no, academic_year, course_info):
     conn.commit()
 
 def insert_func(card_no):
-    bsObj = get_beautiful_soup(str(i),"17-18-2",1)
+    bsObj = get_beautiful_soup(str(i),"17-18-3",1)
     course_info = get_course_dict(get_course_list(bsObj))
     conn, cur = db_conn()
     try:
-        insert_db(conn, cur, str(i), "17-18-2", str(course_info))
+        insert_db(conn, cur, str(i), "17-18-3", str(course_info))
         insert_log("[LOG]插入新的数据", i)
     except IntegrityError:
         insert_log("[LOG]更新重复插入", i)
-        update_db(conn, cur, str(i), "17-18-2", str(course_info))
+        update_db(conn, cur, str(i), "17-18-3", str(course_info))
 
 def insert_log(msg, card_no):
     f = open("../course.log","a")
