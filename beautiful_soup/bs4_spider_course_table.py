@@ -135,10 +135,16 @@ def insert_func(card_no):
     conn, cur = db_conn()
     try:
         insert_db(conn, cur, str(i), "17-18-2", str(course_info))
-        print("插入新的数据", i)
+        insert_log("插入新的数据", i)
     except IntegrityError:
-        print("更新重复插入", i)
+        insert_log("更新重复插入", i)
         update_db(conn, cur, str(i), "17-18-2", str(course_info))
+
+def insert_log(msg, card_no):
+    f = open("../course.log","a")
+    f.write("%s\t%d \n"%(msg,card_no))
+    f.close()
+
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
@@ -148,6 +154,6 @@ if __name__ == "__main__":
             try:
                 insert_func(i)
             except IndexError:
-                print("数据解析错误", i)
+                insert_log("数据解析错误", i)
             else:
                 pass
