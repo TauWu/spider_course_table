@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 from constant.request_const import request_methods, raw_url
 from database import db_conn
 from pymysql.err import IntegrityError
+from requests.exceptions import ConnectionError
 
 import re, json
 
@@ -135,9 +136,9 @@ def insert_func(card_no):
     conn, cur = db_conn()
     try:
         insert_db(conn, cur, str(i), "17-18-2", str(course_info))
-        insert_log("插入新的数据", i)
+        insert_log("[LOG]插入新的数据", i)
     except IntegrityError:
-        insert_log("更新重复插入", i)
+        insert_log("[LOG]更新重复插入", i)
         update_db(conn, cur, str(i), "17-18-2", str(course_info))
 
 def insert_log(msg, card_no):
@@ -154,6 +155,8 @@ if __name__ == "__main__":
             try:
                 insert_func(i)
             except IndexError:
-                insert_log("数据解析错误", i)
+                insert_log("[ERR]数据解析错误", i)
+            except ConnectionError:
+                insert_log("[ERR]网络连接错误", i)
             else:
                 pass
