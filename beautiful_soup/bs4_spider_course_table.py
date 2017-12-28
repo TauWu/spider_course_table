@@ -7,6 +7,7 @@ import requests
 from bs4 import BeautifulSoup
 from constant.request_const import request_methods, raw_url
 from database import db_conn
+from pymysql.err import IntegrityError
 
 import re, json
 
@@ -14,7 +15,6 @@ def get_course(card_no, academic_year):
     """获取课表(GET)
     """
     url = "{raw_url}?queryStudentId={card_no}&queryAcademicYear={academic_year}".format(raw_url=raw_url, card_no=card_no, academic_year=academic_year)
-    print(url)
     return requests.get(url).text
 
 def post_course(card_no, academic_year):
@@ -117,18 +117,37 @@ def insert_db(conn, cur, card_no, academic_year, course_info):
     cur.execute(insert_sql.format(card_no=card_no,academic_year=academic_year,course_info=course_info))
     conn.commit()
 
+def update_db(conn, cur, card_no, academic_year, course_info):
+    update_sql = """
+    update
+        s_course_table
+    set
+        course_info = "{course_info}"
+    where
+        card_no = {card_no} and academic_year = (academic_year)
+    """
+    cur.execute(update_sql.format(card_no=card_no,academic_year=academic_year,course_info=course_info))
+    conn.commit()
+
 def insert_func(card_no):
     bsObj = get_beautiful_soup(str(i),"17-18-2",1)
     course_info = get_course_dict(get_course_list(bsObj))
     conn, cur = db_conn()
-    insert_db(conn, cur, str(i), "17-18-2", str(course_info))
+    try:
+        insert_db(conn, cur, str(i), "17-18-2", str(course_info))
+        print("插入新的数据", i)
+    except IntegrityError:
+        print("更新重复插入", i)
+        update_db(conn, cur, str(i), "17-18-2", str(course_info))
 
 if __name__ == "__main__":
-    for i in range(213140001,213143999):
-        insert_func(i)
-    for i in range(213150001,213153999):
-        insert_func(i)
-    for i in range(213160001,213163999):
-        insert_func(i)
-    for i in range(213170001,213173999):
-        insert_func(i)
+    if len(sys.argv) != 3:
+        print("请输入参数 213150001 213153999")
+    else:
+        for i in range(int(sys.argv[1]), int(sys.argv[2])):
+            try:
+                insert_func(i)
+            except IndexError:
+                print("数据解析错误", i)
+            else:
+                pass
