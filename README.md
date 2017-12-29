@@ -9,6 +9,21 @@ spider_course_table
 提取网址: http://xk.urp.seu.edu.cn/jw_service/service/stuCurriculum.action
 <p>
 
+# 食用方法
+```sh
+# 由主程序入口调用程序
+# python3 spider_main.py [spider_type] [start_card_no] [end_card_no] [academic_year(optional)]
+
+python3 spider_main.py 1 213150001 213153999 17_18_1
+# 为了操作方便需要将17-18-1转变为下划线
+
+# spider_type枚举
+# 1 BeautifulSoup
+# 2 Re
+# 3 lxml
+```
+
+# 请求方法
 ## GET请求
 ```py
 import requests
