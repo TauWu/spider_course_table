@@ -3,7 +3,6 @@
 # 数据库操作动作
 from database import db_conn
 from pymysql.err import IntegrityError
-from .logger import insert_log
 
 def insert_db(conn, cur, card_no, academic_year, course_info):
     insert_sql = """
@@ -27,11 +26,11 @@ def update_db(conn, cur, card_no, academic_year, course_info):
     cur.execute(update_sql.format(card_no=card_no,academic_year=academic_year,course_info=course_info))
     conn.commit()
 
-def insert_func(card_no, academic_year, course_info):
+def insert_func(card_no, academic_year, course_info, logger):
     conn, cur = db_conn()
     try:
         insert_db(conn, cur, str(card_no), academic_year, str(course_info))
-        insert_log("[LOG]插入新的数据", card_no)
+        logger.info("插入新的数据\t%d"%card_no)
     except IntegrityError:
-        insert_log("[LOG]更新重复插入", card_no)
+        logger.info("更新重复插入\t%d"%card_no)
         update_db(conn, cur, str(card_no), academic_year, str(course_info))

@@ -3,7 +3,6 @@
 import sys
 sys.path.append("..")
 
-import requests
 from bs4 import BeautifulSoup
 import re, json
 
@@ -11,7 +10,6 @@ import re, json
 from util.request_jwc import request_course
 from util.data_struct import get_course_dict
 from util.db_controller import insert_func
-from util.logger import insert_log
 
 # 错误模块
 from requests.exceptions import ConnectionError
@@ -35,7 +33,7 @@ def get_course_struct(bsList):
     return s
 
 def get_course_list(card_no, academic_year, method):
-    """通过BeautifulSoup对象解析出课程列表
+    """通过card_no, academic_year, method生成BeautifulSoup对象解析出课程列表
     """
     bsObj = get_beautiful_soup(card_no, academic_year, method)
     course_list = list()
@@ -49,14 +47,14 @@ def get_course_list(card_no, academic_year, method):
         if s: course_list.append(s[:-1])
     return course_list
 
-def bs4_main(academic_year, start_cardno, end_cardno):
+def bs4_main(academic_year, start_cardno, end_cardno, logger):
     for i in range(start_cardno, end_cardno):
         try:
             course_info = get_course_dict(get_course_list(i, academic_year, 1))
-            insert_func(i, academic_year, course_info)
+            insert_func(i, academic_year, course_info, logger)
         except IndexError:
-            insert_log("[ERR]数据解析错误", i)
+            logger.err("数据解析错误\t%d"%i)
         except ConnectionError:
-            insert_log("[ERR]网络连接错误", i)
+            logger.err("网络连接错误\t%d"%i)
         else:
             pass
