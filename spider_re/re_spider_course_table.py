@@ -9,7 +9,6 @@ import re, json
 from util.request_jwc import request_course
 from util.data_struct import get_course_dict
 from util.db_controller import insert_func
-from pprint import pprint
 
 # 错误模块
 from requests.exceptions import ConnectionError
@@ -33,8 +32,7 @@ def get_course_list(card_no, academic_year, method):
     for i in re.findall(r"""<td class="line_topleft" rowspan="2"   align="center">(.+)</td>""", resp):
         s = get_course_struct(i)
         if s: course_list.append(s[:-1])
-    course_dict = get_course_dict(course_list)
-    return course_dict
+    return get_course_dict(course_list)
 
 def re_main(academic_year, start_cardno, end_cardno, logger):
     """使用Re模块匹配课表主程序

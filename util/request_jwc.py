@@ -25,7 +25,6 @@ def request_course(card_no, academic_year, method):
     """
     request_method = request_methods[str(method)]
     if request_method == "GET":
-        req = get_course(card_no, academic_year)
+        return get_course(card_no, academic_year)
     elif request_method == "POST":
-        req = post_course(card_no, academic_year)
-    return req
+        return post_course(card_no, academic_year)
