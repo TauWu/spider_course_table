@@ -2,7 +2,7 @@
 # - 主程序入口 -
 
 import sys
-from beautiful_soup.bs4_spider_course_table import bs4_main
+from spider_bs.bs4_spider_course_table import bs4_main
 from spider_re.re_spider_course_table import re_main
 from util.logger import log_base
 
