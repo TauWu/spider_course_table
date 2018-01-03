@@ -27,12 +27,10 @@ def get_course_struct(re_list):
 def get_course_list(card_no, academic_year, method):
     course_list = list()
     resp = request_course(card_no, academic_year, method)
-    course_day = re.findall(r"""<td rowspan="5" class="line_topleft" align="center">(.+)</td>""",resp)
-    course_night = re.findall(r"""<td class="line_topleft" rowspan="2"   align="center">(.+)</td>""", resp)
-    for i in course_day:
+    for i in re.findall(r"""<td rowspan="5" class="line_topleft" align="center">(.+)</td>""",resp):
         s = get_course_struct(i)
         if s: course_list.append(s[:-1])
-    for i in course_night:
+    for i in re.findall(r"""<td class="line_topleft" rowspan="2"   align="center">(.+)</td>""", resp):
         s = get_course_struct(i)
         if s: course_list.append(s[:-1])
     course_dict = get_course_dict(course_list)
