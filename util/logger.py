@@ -21,7 +21,7 @@ class log_base(object):
         self.logger = logger
 
     def err(self, log):
-        self.logger.err("[ERR]\t%s"%log)
+        self.logger.error("[ERR]\t%s"%log)
 
     def info(self, log):
         self.logger.info("[INF]\t%s"%log)
